@@ -2,7 +2,7 @@
 set -euo pipefail
 
 # Constants
-readonly PROJECT_NAME_STRING="foobar"
+readonly PROJECT_NAME_STRING="{PROJECT_NAME}"
 
 main() {
     if [ "$#" -ne 1 ]; then
