@@ -29,13 +29,17 @@ replace() {
     local readonly replacement_string="$2"
     local readonly sed_inplace_option="$3"
 
-    # Use grep to find files that contain the search pattern and then pass them to sed for replacement.
+    # Exclude the current script file from the grep search so that it does not replace its own placeholder.
+    local this_script
+    this_script="$(basename "${BASH_SOURCE[0]}")"
+
+    # Use grep to find files that contain the search pattern, excluding the script file, then pass them to sed for replacement.
     #
     # Note: The xargs option "-d '\n'" is a GNU extension. On macOS, you might need to use:
     #       grep -rlF "${search_pattern}" . | tr '\n' '\0' | xargs -0 sed ${sed_inplace_option} "s/${search_pattern}/${replacement_string}/g"
     #       if filenames could contain spaces or newlines.
     # TODO: test that
-    grep -rlF "${search_pattern}" . | xargs -d '\n' sed ${sed_inplace_option} "s/${search_pattern}/${replacement_string}/g"
+    grep -rlF --exclude="$this_script" "${search_pattern}" . | xargs -d '\n' sed ${sed_inplace_option} "s/${search_pattern}/${replacement_string}/g"
 }
 
 main "$@"
