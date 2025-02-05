@@ -1,30 +1,20 @@
-#!/bin/bash
-
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
 if [ -z "$1" ]; then
   echo "Usage: $0 <PROJECT_NAME>"
   exit 1
 fi
 
-PROJECT_NAME=$1
-GROUP_ID="com.main"
-OUTPUT_DIR="/build-space/$PROJECT_NAME"
-U_ID=$(id -u)
-G_ID=$(id -g)
+PROJECT_NAME="$1"
 
-DOCKERFILE="build.Dockerfile"
-DOCKER_IMAGE_NAME="maven-project-generator"
+echo "Step 1: Generating project..."
+bash generate_project.sh "$PROJECT_NAME"
 
-docker build \
-  -f $DOCKERFILE \
-  --build-arg UID=$U_ID \
-  --build-arg G_ID=$G_ID \
-  --build-arg GROUP_ID=$GROUP_ID \
-  --build-arg ARTIFACT_ID=$PROJECT_NAME \
-  -t $DOCKER_IMAGE_NAME .
+echo "Step 2: Moving project files up one level..."
+bash move_files.sh "$PROJECT_NAME"
 
-docker run --rm \
-  -v "$(pwd):/workspace" \
-  $DOCKER_IMAGE_NAME \
-  /bin/bash -c "cp -p -r /build-space/* /workspace"
+echo "Step 3: Replacing project name placeholders..."
+bash rename_project.sh "$PROJECT_NAME"
+
+echo "Project setup complete!"
