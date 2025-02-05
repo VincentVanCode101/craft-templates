@@ -29,3 +29,7 @@ docker run --rm \
     -v "$(pwd):/workspace" \
     "$DOCKER_IMAGE_NAME" \
     /bin/bash -c "cp -p -r /build-space/* /workspace"
+
+# Remove `build.Dockerfile` after the build
+echo "Cleaning up: Removing build.Dockerfile..."
+rm -f "$DOCKERFILE"
