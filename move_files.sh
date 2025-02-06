@@ -13,10 +13,8 @@ if [ ! -d "$PROJECT_NAME" ]; then
     exit 1
 fi
 
-echo "Moving files from '$PROJECT_NAME' to the current directory..."
 mv "$PROJECT_NAME"/* .
 
-echo "Removing the now empty '$PROJECT_NAME' folder..."
 rm -fr "$PROJECT_NAME"
 
 echo "Project files moved successfully."
