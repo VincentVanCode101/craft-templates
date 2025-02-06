@@ -17,6 +17,6 @@ echo "Moving files from '$PROJECT_NAME' to the current directory..."
 mv "$PROJECT_NAME"/* .
 
 echo "Removing the now empty '$PROJECT_NAME' folder..."
-rmdir "$PROJECT_NAME"
+rm -fr "$PROJECT_NAME"
 
 echo "Project files moved successfully."
