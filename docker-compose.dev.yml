@@ -1,16 +1,17 @@
-name: foobar
+name: {PROJECT_NAME}
 
 services:
-  java-env:
-    container_name: ${COMPOSE_PROJECT_NAME}-java-env
+  rust-env:
+    container_name: ${COMPOSE_PROJECT_NAME}-rust-env
     build:
       context: .
       target: dev
-    image: ${COMPOSE_PROJECT_NAME}-java-env:latest
+    image: ${COMPOSE_PROJECT_NAME}-rust-env:latest
     volumes:
-      - .:/workspace
-      - foobar_maven_cache:/root/.m2
+      - ./src:/workspace/src
+      - ./Makefile:/workspace/Makefile
+      - {PROJECT_NAME}_cargo_cache:/root/.cargo
     entrypoint: ["tail", "-f", "/dev/null"]
 
 volumes:
-  foobar_maven_cache:
+  {PROJECT_NAME}_cargo_cache:
