@@ -15,7 +15,7 @@ G_ID=$(id -g)
 docker build \
     -f $DOCKERFILE \
     --build-arg UID=$U_ID \
-    --build-arg GID=$GID \
+    --build-arg GID=$G_ID \
     --build-arg PROJECT_NAME=$PROJECT_NAME \
     -t $DOCKER_IMAGE_NAME .
 
