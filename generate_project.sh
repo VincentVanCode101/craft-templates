@@ -8,6 +8,7 @@ fi
 
 PROJECT_NAME="$1"
 DOCKERFILE="build.Dockerfile"
+DOCKER_IMAGE_NAME="rust-project-generator"
 
 U_ID=$(id -u)
 G_ID=$(id -g)
