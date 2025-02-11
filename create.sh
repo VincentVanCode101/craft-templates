@@ -17,7 +17,7 @@ bash move_files.sh "$PROJECT_NAME"
 echo "Step 3: Replacing project name placeholders..."
 bash rename_project.sh "$PROJECT_NAME"
 
-echo "Cleaning up temporary scripts..."
+echo "Step 4: Cleaning up temporary scripts..."
 rm -f generate_project.sh move_files.sh rename_project.sh create.sh
 
 echo "Project setup complete!"

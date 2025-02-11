@@ -29,7 +29,6 @@ replace() {
     grep -rlF --exclude="$this_script" "${search_pattern}" . | xargs sed "${sed_inplace_option[@]}" "s/${search_pattern}/${replacement_string}/g"
 }
 
-echo "Replacing placeholder '$PROJECT_NAME_STRING' with '$new_project_name'..."
 replace "$PROJECT_NAME_STRING" "$new_project_name"
 
 echo "Renaming completed."
