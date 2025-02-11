@@ -1,17 +1,14 @@
-FROM rust:latest AS dev
+FROM maven:3.9.6-eclipse-temurin-21-jammy AS dev
 
 WORKDIR /workspace
 
-RUN apt-get update && apt-get install -y make && rm -rf /var/lib/apt/lists/*
+COPY ./pom.xml ./
 
-RUN rustup component add clippy rustfmt \
-    && cargo install cargo-watch
+RUN mvn dependency:go-offline
 
-COPY Cargo.toml ./
-COPY src ./src
+RUN apt-get update && apt-get install -y make
 
-RUN cargo fetch
+COPY src/ ./src/
+COPY Makefile Makefile
 
-COPY Makefile .
-
-CMD ["cargo", "run"]
+RUN make test

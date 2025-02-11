@@ -9,6 +9,9 @@ release.properties
 # Local environment
 .env
 
+# Plugin directory
+/.quarkus/cli/plugins/
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
