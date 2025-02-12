@@ -34,7 +34,6 @@ rename_project() {
 
     replace "$PROJECT_NAME_STRING" "$new_project_name"
 
-    echo "Renaming completed."
 }
 
 # Prevent this file from being executed directly.

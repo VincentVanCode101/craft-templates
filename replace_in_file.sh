@@ -93,7 +93,6 @@ replace_in_file() {
     local escaped
     escaped=$(_escape_multiline_string "$replacement_text")
 
-    echo "[text_helpers] Replacing pattern '$search_pattern' in $file"
     sed "${sed_inplace_option[@]}" "s|${search_pattern}|${escaped}|" "$file"
 }
 

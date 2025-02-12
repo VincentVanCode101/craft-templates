@@ -16,7 +16,6 @@ move_project_files() {
 
     mv "$PROJECT_NAME"/* .
     rm -rf "$PROJECT_NAME"
-    echo "Project files moved successfully."
 }
 
 # Prevent direct execution of this script.
