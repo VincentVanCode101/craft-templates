@@ -34,11 +34,11 @@ Once the container is running, connect to it for development purposes.
   docker exec -it {PROJECT_NAME}-go-compiler bash
   ```
 
-### **How to Use the Makefile (Container Usage)**
+### **How to Use the make (file) (Container Usage)**
 
-This `Makefile` is designed to simplify building, running, and cleaning up a Go application. It includes commands for building the application for local and Linux environments, running the binary, and cleaning up build artifacts.
+This `make` file is designed to simplify building, running, and cleaning up a Go application. It includes commands for building the application for local and Linux environments, running the binary, and cleaning up build artifacts. This is not the 'make' you know from your unix-environment, but just a bash script.
 
-You need to connect to the [development container](#2-connect-to-the-development-container) and can use the `make` commands here (and only here... not outside the container)
+You need to connect to the [development container](#2-connect-to-the-development-container) and can use the `./make` commands here (and only here... not outside the container)
 
 ---
 
@@ -48,7 +48,7 @@ You need to connect to the [development container](#2-connect-to-the-development
 - **Purpose**: Builds the main Go project binary.
 - **Usage**:
   ```bash
-  make
+  ./make
   ```
 - **Effect**:
   - Compiles the main Go application specified by `MAIN_PACKAGE` (`./main.go`) into a binary named `{PROJECT_NAME}`.
@@ -60,19 +60,19 @@ You need to connect to the [development container](#2-connect-to-the-development
 - **Usage**:
   - **Build the main project**:
     ```bash
-    make build
+    ./make build
     ```
   - **Build a specific Go file**:
     ```bash
-    make build ARGS=path/to/otherfile.go
+    ./make build path/to/otherfile.go
     ```
 - **Effect**:
-  - If no `ARGS` is provided, compiles `MAIN_PACKAGE` into the binary `$(BINARY_NAME)`.
-  - If `ARGS` is provided, compiles the specified file into a binary with the same name (without the `.go` extension).
+  - If no second arg is provided, compiles `MAIN_PACKAGE` into the binary `$(BINARY_NAME)`.
+  - If a second arg is provided, compiles the specified file into a binary with the same name (without the `.go` extension).
 
 - **Example**:
   ```bash
-  make build
+  ./make build
   ```
   Output:
   ```
@@ -85,7 +85,7 @@ You need to connect to the [development container](#2-connect-to-the-development
 - **Purpose**: Builds the Go application for a Linux environment.
 - **Usage**:
   ```bash
-  make linux-build
+  ./make linux-build
   ```
 - **Effect**:
   - Sets environment variables (`CGO_ENABLED=0` and `GOOS=linux`) for a Linux-compatible build.
@@ -93,7 +93,7 @@ You need to connect to the [development container](#2-connect-to-the-development
 
 - **Example**:
   ```bash
-  make linux-build
+  ./make linux-build
   ```
   Output:
   ```
@@ -107,19 +107,19 @@ You need to connect to the [development container](#2-connect-to-the-development
 - **Usage**:
   - **Run the main binary**:
     ```bash
-    make run
+    ./make run
     ```
   - **Run a specific binary**:
     ```bash
-    make run ARGS=path/to/otherfile.go
+    ./make run path/to/otherfile.go
     ```
 - **Effect**:
-  - Executes the `$(BINARY_NAME)` binary if `ARGS` is not provided.
-  - If `ARGS` is provided, runs the binary corresponding to the specified Go file.
+  - Executes the `$(BINARY_NAME)` binary if a second arg is not provided.
+  - If a second arg is provided, runs the binary corresponding to the specified Go file.
 
 - **Example**:
   ```bash
-  make run
+  ./make run
   ```
   Output:
   ```
@@ -132,20 +132,36 @@ You need to connect to the [development container](#2-connect-to-the-development
 - **Purpose**: Cleans up build artifacts.
 - **Usage**:
   ```bash
-  make clean
+  ./make clean
   ```
 - **Effect**:
   - Executes `go clean` to remove any intermediate or build artifacts created during the build process.
 
 - **Example**:
   ```bash
-  make clean
+  ./make clean
   ```
   Output:
   ```
   Cleaning up Go build artifacts...
   ```
+#### **6. Test: `make test`**
+- **Purpose**: Tests the project
+- **Usage**:
+  ```bash
+  ./make test
+  ```
+- **Effect**:
+  - Executes `go test` test the project.
 
+- **Example**:
+  ```bash
+  ./make test
+  ```
+  Output:
+  ```
+  Running tests...
+  ```
 ---
 
 #### **Best Practices**
@@ -200,4 +216,4 @@ The pre-commit hook script ensures that your code passes static analysis checks 
 
 ---
 
-This `Makefile` simplifies project management insid the container by providing quick commands for building, running, and cleaning your Go application, as well as preparing it for Linux deployment.
+This `./make` file simplifies project management insid the container by providing quick commands for building, running, and cleaning your Go application, as well as preparing it for Linux deployment.

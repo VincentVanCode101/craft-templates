@@ -32,6 +32,7 @@ build)
     if [ -z "$FILE" ]; then
         echo "Building the main project ($MAIN_PACKAGE)..."
         go build -o "$BINARY_NAME" "$MAIN_PACKAGE"
+        chmod +x "$BINARY_NAME"
     else
         # If FILE ends with ".go", remove the extension to form the output binary name.
         if [[ "$FILE" == *.go ]]; then
@@ -41,12 +42,13 @@ build)
         fi
         echo "Building $FILE..."
         go build -o "$OUTPUT" "$FILE"
+        chmod +x "$OUTPUT"
     fi
     ;;
 linux-build)
     echo "Building for Linux (CGO_ENABLED=0 GOOS=linux)..."
-    # linux-build always uses the main package.
     CGO_ENABLED=0 GOOS=linux go build -o "$BINARY_NAME" "$MAIN_PACKAGE"
+    chmod +x "$BINARY_NAME"
     ;;
 run)
     if [ -z "$FILE" ]; then
