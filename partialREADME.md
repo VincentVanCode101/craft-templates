@@ -62,7 +62,7 @@ You need to connect to the [development container](#2-connect-to-the-development
   ```
 
 > [!NOTE]
-> The `./make` file does not include a target for building native executables since GraalVM or Docker-based native builds are not available inside the development container. To build a native executable, use a compatible external setup. (The feature to get this up and running will come soon... Refer to the craft documentation about build || prod level builds.)
+> The `./make` file does not include a target for building native executables since GraalVM or Docker-based native builds are not available inside the development container. To build a native executable, use a compatible external setup. (The feature to get this up and running will come soon... Refer to the craft documentation about 'build / prod' level builds.)
 
 ## Notes
 - **Remove Maven Wrappers**: Since the project uses Docker for build and runtime environments, the `mvnw` and `mvnw.cmd` files can be removed to avoid the installation of Maven locally.
