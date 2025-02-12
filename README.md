@@ -1,203 +1,122 @@
-# {PROJECT_NAME}
-### **How to Start the Project Using Docker**
+# Contributing Template Branches to Craft-Templates
 
-This project is configured to run inside a Docker container for consistent development environments. Follow the steps below to set up, start, and use the project.
+Thank you for considering contributing a new template branch to the Craft Tool! This guide explains what you need to include in your template branch, how to structure your files, and the naming conventions required for branch names in the [craft-templates repo](https://github.com/VincentVanCode101/craft-templates).
 
----
-
-### **Steps to Start the Project**
-
-#### **1. Build and Start the Docker Environment**
-Use the provided `docker-compose.dev.yml` file to build and start the development container.
-
-- **Build the container:**
-  ```bash
-  docker compose -f docker-compose.dev.yml build
-  ```
-
-- **Start the container:**
-  ```bash
-  docker compose -f docker-compose.dev.yml up -d
-  ```
-
-- **Confirm the container is running:**
-  ```bash
-  docker ps
-  ```
-  Look for a container named `{PROJECT_NAME}-go-compiler`.
-
-#### **2. Connect to the Development Container**
-Once the container is running, connect to it for development purposes.
-
-- **Open a bash session in the container:**
-  ```bash
-  docker exec -it {PROJECT_NAME}-go-compiler bash
-  ```
-
-### **How to Use the Makefile (Container Usage)**
-
-This `Makefile` is designed to simplify building, running, and cleaning up a Go application. It includes commands for building the application for local and Linux environments, running the binary, and cleaning up build artifacts.
-
-You need to connect to the [development container](#2-connect-to-the-development-container) and can use the `make` commands here (and only here... not outside the container)
+> **Important:**  
+> Everywhere in your template files where the final project’s name should appear, use the placeholder `{PROJECT_NAME}`. The Craft Tool will automatically replace `{PROJECT_NAME}` with the actual project name during project generation.
 
 ---
 
-### **Commands Overview**
+## What Your Template Must Include
 
-#### **1. Default Target: `make` or `make all`**
-- **Purpose**: Builds the main Go project binary.
-- **Usage**:
-  ```bash
-  make
-  ```
-- **Effect**:
-  - Compiles the main Go application specified by `MAIN_PACKAGE` (`./main.go`) into a binary named `{PROJECT_NAME}`.
+Your template should provide a ready-to-use project setup for a given language and build level (e.g., _build_ or _prod_), with or without additional dependencies. At a minimum, your template must include the following files:
 
----
+1. **`create.sh`**  
+   - **Purpose:** This is the entry point for the template. When a user runs `create.sh`, it should perform all the necessary steps so that the only thing left is a fully configured project.
+   - **Expectation:** After executing `create.sh`, the generated project should be ready for use—no further manual configuration is required.
 
-#### **2. Build: `make build`**
-- **Purpose**: Builds the Go application or a specified Go file.
-- **Usage**:
-  - **Build the main project**:
-    ```bash
-    make build
-    ```
-  - **Build a specific Go file**:
-    ```bash
-    make build ARGS=path/to/otherfile.go
-    ```
-- **Effect**:
-  - If no `ARGS` is provided, compiles `MAIN_PACKAGE` into the binary `$(BINARY_NAME)`.
-  - If `ARGS` is provided, compiles the specified file into a binary with the same name (without the `.go` extension).
+2. **Dockerfile(s)**  
+   - **Purpose:** Provide Dockerfiles that support your template’s build and/or production requirements.
+   - **Examples:**
+     - A builder Dockerfile (e.g., based on `maven`, `golang`, `rust`, etc.) for generating or compiling the project.
+     - A development Dockerfile that can be used to run tests and start the application in a development environment.
+   - **Level Considerations:**  
+     - For **build** or **prod** templates, your Dockerfile(s) must do more than just provide a runtime. They should support full build and/or production workflows—either through a multi-stage Dockerfile or by providing multiple Dockerfiles that separate the build and runtime stages.
 
-- **Example**:
-  ```bash
-  make build
-  ```
-  Output:
-  ```
-  Building the main project (./main.go)...
-  ```
+3. **`docker-compose.dev.yml`**  
+   - **Purpose:** Sets up the development environment. This file should define services (containers), volumes, ports, and any environment variables needed.
+   - **Usage Instructions:** In the generated project’s README, explain to the user how to use this file (e.g., how to build and run the container).
 
----
+4. **`make` Script**  
+   - **Purpose:** Provide a set of commands for building, testing, running, cleaning, and packaging the project.
+   - **Expected Commands:**
+     - **`build`**: Compile the project (or specific source files).
+     - **`run`**: Run the main application (or a specified file).
+     - **`test`**: Run tests.
+     - **`clean`**: Clean build artifacts.
+     - etc.
+   - **Usage Instructions:** The generated README should detail how to invoke these commands within the development container.
 
-#### **3. Build for Linux: `make linux-build`**
-- **Purpose**: Builds the Go application for a Linux environment.
-- **Usage**:
-  ```bash
-  make linux-build
-  ```
-- **Effect**:
-  - Sets environment variables (`CGO_ENABLED=0` and `GOOS=linux`) for a Linux-compatible build.
-  - Compiles the `MAIN_PACKAGE` into the binary `$(BINARY_NAME)`.
-
-- **Example**:
-  ```bash
-  make linux-build
-  ```
-  Output:
-  ```
-  Building for Linux (CGO_ENABLED=0 GOOS=linux)...
-  ```
+5. **`README.md` (for the generated project)**  
+   - **Purpose:** This README is intended for end users who generate a project using your template.
+   - **Content Should Include:**
+     - An overview of the project.
+     - Instructions on how to build and start the Docker development environment (using the provided `docker-compose.dev.yml` file).
+     - Steps to connect to the development container (or build / prod containers) (e.g., using `docker exec -it {xxx} bash`).
+     - How to use the Make script commands (e.g., `./make build`, `./make test`, `./make run`, etc.).
+     - Any additional configuration or dependency-related notes that the user should be aware of.
 
 ---
 
-#### **4. Run: `make run`**
-- **Purpose**: Runs the compiled Go binary or a specified binary.
-- **Usage**:
-  - **Run the main binary**:
-    ```bash
-    make run
-    ```
-  - **Run a specific binary**:
-    ```bash
-    make run ARGS=path/to/otherfile.go
-    ```
-- **Effect**:
-  - Executes the `$(BINARY_NAME)` binary if `ARGS` is not provided.
-  - If `ARGS` is provided, runs the binary corresponding to the specified Go file.
+## Repository Structure Example
 
-- **Example**:
-  ```bash
-  make run
-  ```
-  Output:
-  ```
-  Running the main project ({PROJECT_NAME})...
-  ```
+Your template branch should have a structure similar to this:
+
+```
+.
+├── create.sh                  # Entry point for generating the project
+├── Dockerfile                 # (Or multiple Dockerfiles as needed)
+├── docker-compose.dev.yml     # Development environment configuration
+├── make                       # Make script (executable) for build/test/run tasks
+├── README.md                  # Documentation for the generated project
+└── ...                        # Any additional scripts or configuration files
+```
 
 ---
 
-#### **5. Clean: `make clean`**
-- **Purpose**: Cleans up build artifacts.
-- **Usage**:
-  ```bash
-  make clean
-  ```
-- **Effect**:
-  - Executes `go clean` to remove any intermediate or build artifacts created during the build process.
+## Level-Specific Requirements
 
-- **Example**:
-  ```bash
-  make clean
-  ```
-  Output:
-  ```
-  Cleaning up Go build artifacts...
-  ```
+- **Dev Level (Default):**  
+  If no level is specified in the template key, the default level is assumed to be `dev`. A dev-level template should provide a basic language runtime environment suitable for development.
+
+- **Build/Prod Levels:**  
+  If you are contributing a template for a `build` or `prod` level, you **must** include a `docker-compose.yml` file (or similarly named configuration file) that sets up the complete environment for building or production deployment.  
+  Additionally, your Dockerfile(s) for build or prod levels must do more than just supply a runtime—they should support full build and/or production workflows. This can be achieved by:
+  - Providing a multi-stage Dockerfile that handles both building and packaging the application.
+  - Offering multiple Dockerfiles that separate the build and runtime stages.
 
 ---
 
-#### **Best Practices**
-- **Binary Name**: Update the `BINARY_NAME` variable to reflect your application name.
-- **Main Package**: Ensure the `MAIN_PACKAGE` points to your main Go file (default is `./main.go`).
+## Branch Naming Conventions
 
-### **Using the Pre-Commit Hook**
+Templates are identified by a **templates key** which is constructed by joining the language, an optional level (`build` or `prod`), and any dependencies (sorted alphabetically) with underscores.
 
-The pre-commit hook script ensures that your code passes static analysis checks (`golint`) and is properly formatted (`gofmt`) before commits. 
+### Key Construction
 
-1. **Ensure the Development Container is Running**
-   Make sure the container is running by following the steps in [Build and start the docker environment](#1-build-and-start-the-docker-environment) section above.
+- **Default Level:**  
+  If no level is specified, the key is just the language (e.g., `go`).
 
-2. **Run the Pre-Commit Hook**
-   The pre-commit hook checks for linting issues and formatting problems using tools inside the container.
+- **Explicit Level:**  
+  If a level is provided, the key becomes `language_level` (e.g., `go_prod`, `java_build`).
 
-   - **Execute the script:**
-     ```bash
-     ./pre-commit
-     ```
+- **With Dependencies:**  
+  Append sorted (alphabetically) dependencies to the key (e.g., `go_prod_mariadb_ncurs`).
 
-   - **What It Does:**
-     - Runs `golint` to identify coding issues.
-     - Runs `gofmt` to ensure proper formatting.
-     - Outputs results with color-coded messages.
+> **Important:** This constructed templates key **must** be the name of the branch in the [craft-templates repo](https://github.com/VincentVanCode101/craft-templates).
 
-#### **Expected Output**
-- **Successful Checks:**
-  If all checks pass:
-  ```bash
-  golint passed.
-  gofmt passed.
-  Pre-commit checks passed!
-  ```
-
-- **Failed Checks:**
-  If issues are detected:
-  - **`golint` issues:**
-    ```bash
-    golint detected issues:
-    path/to/file.go:line:col: Description of issue
-    ```
-  - **`gofmt` issues:**
-    ```bash
-    gofmt detected improperly formatted files:
-    path/to/file.go
-    ```
-
-#### **Fix Issues**
-- Address the issues reported by `golint` and `gofmt`.
-- Rerun the `./pre-commit` script to verify that the issues have been resolved.
+Make sure that your branch name in the repository exactly matches the constructed key.
 
 ---
 
-This `Makefile` simplifies project management insid the container by providing quick commands for building, running, and cleaning your Go application, as well as preparing it for Linux deployment.
+## Contributing Process
+
+> **Note:** Before submitting your template, please take a look at the existing templates in the repository, as they all adhere to these standards and can serve as valuable examples.
+
+
+1. **Fork and Create a Branch:**  
+   - Fork the [craft-templates repo](https://github.com/VincentVanCode101/craft-templates) and create a new branch named according to the templates key (e.g., `java_build`, `go_prod_mysql`, `python_build_fastapi`, etc.).
+
+2. **Implement the Template:**  
+   - Populate your branch with all the required files and follow the structure outlined above.
+   - Ensure that every instance of the project name is denoted by `{PROJECT_NAME}`.
+
+3. **Test Your Template:**  
+   - Run your `create.sh` locally to verify that it generates a complete and functional project.
+   - Double-check that the generated README provides clear instructions for end users on how to use Docker, the Make script, and any other provided tools.
+
+4. **Submit a Pull Request:**  
+   - Once your template is ready and tested, submit a pull request with a clear description of your changes and instructions for users.
+
+---
+
+Thank you for contributing to the Craft Tool template collection! Your efforts help make it easier for others to quickly generate and start projects in their preferred language and environment.
