@@ -28,7 +28,7 @@ source ./replace_in_file.sh
 partial_content=$(cat partialREADME.md)
 replace_in_file "README.md" "# $PROJECT_NAME" "$partial_content"
 
-echo "Step 6: Cleaning up temporary scripts..."
+echo "Step 6: Cleaning up build files..."
 rm -f generate_project.sh move_files.sh rename_project.sh create.sh replace_in_file.sh partialREADME.md build.Dockerfile
 
 echo "Project setup complete!"
