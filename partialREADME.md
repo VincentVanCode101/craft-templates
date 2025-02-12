@@ -33,36 +33,36 @@ Once the container is running, connect to it for development purposes.
   ```bash
   docker exec -it {PROJECT_NAME}-java-env bash
   ```
-  - use the `make` command from here on (see the chapter below)
+  - use the `make` script command from here on (see the chapter below)
 
 > [!NOTE]
 > When you have started the docker compose, quarkus is already running in the dev mode
 
-### **How to Use the Makefile (Container Usage)**
+### **How to Use the make (file) (Container Usage)**
 
-This `Makefile` is designed to streamline the process of building, running, testing, and cleaning up a Java project inside a Docker container environment. The commands are optimized to work with a typical Java/Maven project structure and can be executed within the container.
+This `./make` (file) is designed to streamline the process of building, running, testing, and cleaning up a Java project inside a Docker container environment. The commands are optimized to work with a typical Java/Maven project structure and can be executed within the container. This is not the 'make' you know from your unix-environment, but just a bash script.
 
-You need to connect to the [development container](#2-connect-to-the-development-container) and can use the `make` commands here (and only here... not outside the container)
+You need to connect to the [development container](#2-connect-to-the-development-container) and can use the `./make` script here (and only here... not outside the container)
 
 - **Build the application**:
   ```bash
-  make build
+  ./make build
   ```
 - **Run the application in development mode**:
   ```bash
-  make dev
+  ./make dev
   ```
 - **Run tests**:
   ```bash
-  make test
+  ./make test
   ```
 - **Package the application into an uber-jar**:
   ```bash
-  make package
+  ./make package
   ```
 
 > [!NOTE]
-> The `Makefile` does not include a target for building native executables since GraalVM or Docker-based native builds are not available inside the development container. To build a native executable, use a compatible external setup. (The feature to get this up and running will come soon.)
+> The `./make` file does not include a target for building native executables since GraalVM or Docker-based native builds are not available inside the development container. To build a native executable, use a compatible external setup. (The feature to get this up and running will come soon... Refer to the craft documentation about build || prod level builds.)
 
 ## Notes
 - **Remove Maven Wrappers**: Since the project uses Docker for build and runtime environments, the `mvnw` and `mvnw.cmd` files can be removed to avoid the installation of Maven locally.
