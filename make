@@ -1,19 +1,26 @@
 #!/bin/bash
-# Bash script for building and running Go applications
+# Bash script for building, testing, and running Go applications
 
 # Application settings
 BINARY_NAME="{PROJECT_NAME}"
 MAIN_PACKAGE="./main.go"
 
-# Function to show usage information
+# Function to display usage information
 usage() {
-    echo "Usage: $0 {all|build|linux-build|run|clean}"
-    echo "Optionally, set the ARGS environment variable to override the default main package."
+    echo "Usage: $0 {all|build|linux-build|run|test|clean} [FILE]"
+    echo ""
+    echo "  FILE (optional) - When provided with build or run, overrides the default main package."
     exit 1
 }
 
-# If no command is provided, default to "build" (as 'all' does in the Makefile)
-COMMAND=${1:-build}
+# Read the first and second command-line arguments.
+COMMAND="$1"
+FILE="$2"
+
+# If no command is provided, default to "build"
+if [ -z "$COMMAND" ]; then
+    COMMAND="build"
+fi
 
 # The 'all' target is equivalent to 'build'
 if [ "$COMMAND" = "all" ]; then
@@ -21,36 +28,50 @@ if [ "$COMMAND" = "all" ]; then
 fi
 
 case "$COMMAND" in
-    build)
-        if [ -z "$ARGS" ]; then
-            echo "Building the main project ($MAIN_PACKAGE)..."
-            go build -o "$BINARY_NAME" "$MAIN_PACKAGE"
+build)
+    if [ -z "$FILE" ]; then
+        echo "Building the main project ($MAIN_PACKAGE)..."
+        go build -o "$BINARY_NAME" "$MAIN_PACKAGE"
+    else
+        # If FILE ends with ".go", remove the extension to form the output binary name.
+        if [[ "$FILE" == *.go ]]; then
+            OUTPUT=$(basename "$FILE" .go)
         else
-            # Use the basename of ARGS (removing a trailing ".go", if present) as the output name
-            OUTPUT=$(basename "$ARGS" .go)
-            echo "Building $ARGS..."
-            go build -o "$OUTPUT" "$ARGS"
+            OUTPUT=$(basename "$FILE")
         fi
-        ;;
-    linux-build)
-        echo "Building for Linux (CGO_ENABLED=0 GOOS=linux)..."
-        CGO_ENABLED=0 GOOS=linux go build -o "$BINARY_NAME" "$MAIN_PACKAGE"
-        ;;
-    run)
-        if [ -z "$ARGS" ]; then
-            echo "Running the main project ($BINARY_NAME)..."
-            ./"$BINARY_NAME"
+        echo "Building $FILE..."
+        go build -o "$OUTPUT" "$FILE"
+    fi
+    ;;
+linux-build)
+    echo "Building for Linux (CGO_ENABLED=0 GOOS=linux)..."
+    # linux-build always uses the main package.
+    CGO_ENABLED=0 GOOS=linux go build -o "$BINARY_NAME" "$MAIN_PACKAGE"
+    ;;
+run)
+    if [ -z "$FILE" ]; then
+        echo "Running the main project ($BINARY_NAME)..."
+        ./"$BINARY_NAME"
+    else
+        # If FILE ends with ".go", remove the extension to get the binary name.
+        if [[ "$FILE" == *.go ]]; then
+            OUTPUT=$(basename "$FILE" .go)
         else
-            OUTPUT=$(basename "$ARGS" .go)
-            echo "Running $ARGS..."
-            ./"$OUTPUT"
+            OUTPUT=$(basename "$FILE")
         fi
-        ;;
-    clean)
-        echo "Cleaning up Go build artifacts..."
-        go clean
-        ;;
-    *)
-        usage
-        ;;
+        echo "Running $FILE (binary: $OUTPUT)..."
+        ./"$OUTPUT"
+    fi
+    ;;
+test)
+    echo "Running tests..."
+    go test ./...
+    ;;
+clean)
+    echo "Cleaning up Go build artifacts..."
+    go clean
+    ;;
+*)
+    usage
+    ;;
 esac
