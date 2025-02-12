@@ -7,6 +7,6 @@ COPY ./pom.xml ./
 RUN mvn dependency:go-offline
 
 COPY src/ ./src/
-COPY Makefile Makefile
+COPY make make
 
 RUN ./make test
