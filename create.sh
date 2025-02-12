@@ -8,10 +8,12 @@ fi
 
 readonly PROJECT_NAME="$1"
 
-echo "Step 1: Replacing project name placeholders..."
-bash rename_project.sh "$PROJECT_NAME"
+source ./rename_project.sh
 
-echo "Step 2: Cleaning up: Removing generate_project.sh..."
-rm -f generate_project.sh
+echo "Step 1: Replacing project name placeholders..."
+rename_project "$PROJECT_NAME"
+
+echo "Step 2: Cleaning up: Removing rename_project.sh..."
+rm -f rename_project.sh
 
 echo "Project setup complete!"
