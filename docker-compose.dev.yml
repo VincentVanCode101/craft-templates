@@ -1,4 +1,4 @@
-name: foobar
+name: {PROJECT_NAME}
 
 services:
   java-env:
@@ -9,8 +9,8 @@ services:
     image: ${COMPOSE_PROJECT_NAME}-java-env:latest
     volumes:
       - .:/workspace
-      - foobar_maven_cache:/root/.m2
+      - {PROJECT_NAME}_maven_cache:/root/.m2
     entrypoint: ["tail", "-f", "/dev/null"]
 
 volumes:
-  foobar_maven_cache:
+  {PROJECT_NAME}_maven_cache:
