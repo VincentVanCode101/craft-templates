@@ -64,6 +64,8 @@ Your template branch should have a structure similar to this:
 
 ---
 
+> **Note:** Please review the [helpers](./helpers) folder, which contains useful scripts that many templates already leverage in their create.sh to streamline project generation..
+
 ## Level-Specific Requirements
 
 - **Dev Level (Default):**  

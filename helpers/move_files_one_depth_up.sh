@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-move_files() {
+move_files_one_depth_up() {
     local project_name="$1"
 
     if [ ! -d "$project_name" ]; then
