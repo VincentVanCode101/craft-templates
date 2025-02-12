@@ -8,4 +8,4 @@ RUN go install golang.org/x/lint/golint@latest
 
 COPY . .
 
-ENTRYPOINT [ "make linux-build" ]
+ENTRYPOINT [ "./make linux-build" ]
