@@ -41,7 +41,7 @@ Your template should provide a ready-to-use project setup for a given language a
    - **Purpose:** This README is intended for end users who generate a project using your template.
    - **Content Should Include:**
      - An overview of the project.
-     - Instructions on how to build and start the Docker development environment (using the provided `docker-compose.dev.yml` file).
+     - Instructions on how to build and start the Docker development environment (using the provided `docker-compose.dev.yml` file)(Or depending on the level how to start the build || prod level docker containers).
      - Steps to connect to the development container (or build / prod containers) (e.g., using `docker exec -it {xxx} bash`).
      - How to use the Make script commands (e.g., `./make build`, `./make test`, `./make run`, etc.).
      - Any additional configuration or dependency-related notes that the user should be aware of.
