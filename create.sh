@@ -26,7 +26,7 @@ rename_project "$PROJECT_NAME"
 echo "Step 5: Merge our README.md with their README.md"
 source ./replace_in_file.sh
 partial_content=$(cat partialREADME.md)
-replace_in_file "README.md" '#\$PROJECT_NAME' "$partial_content"
+replace_in_file "README.md" "# $PROJECT_NAME" "$partial_content"
 
 echo "Step 6: Cleaning up temporary scripts..."
 rm -f generate_project.sh move_files.sh rename_project.sh create.sh replace_in_file.sh partialREADME.md
