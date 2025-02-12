@@ -79,7 +79,7 @@ replace_in_file() {
     local replacement_text=$3
 
     if [ ! -f "$file" ]; then
-        echo "[text_helpers] ERROR: File '$file' does not exist." >&2
+        echo "ERROR: File '$file' does not exist." >&2
         return 1
     fi
 
