@@ -2,41 +2,29 @@
 set -euo pipefail
 
 rename_project() {
-    # Constant placeholder to be replaced
-    local PROJECT_NAME_STRING="{PROJECT_NAME}"
-
-    if [ "$#" -ne 1 ]; then
-        echo "Usage: rename_project <new_project_name>" >&2
-        return 1
-    fi
-
     local new_project_name="$1"
+    local readonly project_name_string="{PROJECT_NAME}"
 
-    # Determine correct sed option for macOS or Linux
-    local sed_inplace_option=()
     if [[ "$(uname)" == "Darwin" ]]; then
         sed_inplace_option=(-i "")
     else
         sed_inplace_option=(-i)
     fi
 
-    # Internal helper function to perform replacement in files
     replace() {
         local search_pattern="$1"
         local replacement_string="$2"
-
         local this_script
         this_script="$(basename "${BASH_SOURCE[0]}")"
 
-        # Use grep to find files containing the pattern, exclude the script itself, and perform the replacement
-        grep -rlF --exclude="$this_script" "${search_pattern}" . | xargs sed "${sed_inplace_option[@]}" "s/${search_pattern}/${replacement_string}/g"
+        # Replace all occurrences of the placeholder in files (excluding this script)
+        grep -rlF --exclude="$this_script" "${search_pattern}" . |
+            xargs sed "${sed_inplace_option[@]}" "s/${search_pattern}/${replacement_string}/g"
     }
 
-    replace "$PROJECT_NAME_STRING" "$new_project_name"
-
+    replace "$project_name_string" "$new_project_name"
 }
-
-# Prevent this file from being executed directly.
+# Prevent direct execution of this script.
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     echo "This script is meant to be sourced, not executed directly." >&2
     exit 1
