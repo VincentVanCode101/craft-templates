@@ -33,50 +33,50 @@ Once the container is running, connect to it for further development.
   docker exec -it {PROJECT_NAME}-rust-env bash
   ```
 
-#### **3. Use the Makefile for Project Operations**
-After connecting to the container, you can use the `Makefile` to build, run, and test the application.
+#### **3. Use the make (file) for Project Operations**
+After connecting to the container, you can use the `./make` (file) to build, run, and test the application.
 
 
-### **How to Use the Makefile (Container Usage)**
+### **How to Use the make (file) (Container Usage)**
 
-This `Makefile` is designed to streamline the process of building, running, testing, and cleaning up a Rust project inside a Docker container environment.
+This `./make` (file) is designed to streamline the process of building, running, testing, and cleaning up a Rust project inside a Docker container environment. This is not the 'make' you know from your unix-environment, but just a bash script.
 
 You need to connect to the [development container](#2-connect-to-the-development-container) and can use the `make` commands here (and only here... not outside the container)
 
 - **Build the application in release mode**:
   ```bash
-  make build
+  ./make build
   ```
 - **Build the application in debug mode**:
   ```bash
-  make debug-build
+  ./make debug-build
   ```
 - **Run the application**:
   ```bash
-  make run
+  ./make run
   ```
 - **Run tests**:
   ```bash
-  make test
+  ./make test
   ```
 - **Lint the application**:
   ```bash
-  make lint
+  ./make lint
   ```
 - **Format the code**:
   ```bash
-  make format
+  ./make format
   ```
 - **Clean build artifacts**:
   ```bash
-  make clean
+  ./make clean
   ```
 - **Watch for changes and rebuild automatically**:
   ```bash
-  make watch
+  ./make watch
   ```
 
 ---
 
 ## Notes
-- The `Makefile` provides a streamlined workflow, ensuring that all operations are performed within the container to maintain consistency.
+- The `./make` (file) provides a streamlined workflow, ensuring that all operations are performed within the container to maintain consistency.
