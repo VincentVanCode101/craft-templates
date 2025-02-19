@@ -24,7 +24,7 @@ rename_project() {
 
     replace "$project_name_string" "$new_project_name"
 }
-# Prevent direct execution of this script.
+
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     echo "This script is meant to be sourced, not executed directly." >&2
     exit 1
