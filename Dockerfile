@@ -58,4 +58,5 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash && \
 
 WORKDIR /var/www/symfony
 
-CMD ["symfony server:start --allow-all-ip"]
+# CMD ["symfony server:start --allow-all-ip"]
+CMD ["/bin/bash"]
