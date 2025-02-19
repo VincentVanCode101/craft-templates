@@ -5,6 +5,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-symfony-env
     build: .
     volumes:
-      - ./app:/var/www/symfony
+      - ./:/var/www/symfony
     ports:
       - ${DOCKER_PORT:-8000}:8000
+
+    command: tail -f /dev/null
