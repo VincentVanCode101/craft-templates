@@ -63,6 +63,6 @@ RUN curl -sS https://get.symfony.com/cli/installer | bash && \
     mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
 
 # Set working directory (volume will be mounted here)
-RUN symfony new --no-git --no-interaction --webapp .
+RUN symfony new --no-git --no-interaction --version=lts --webapp .
 
 RUN chown -R 1000:1000 /build-space

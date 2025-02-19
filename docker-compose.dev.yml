@@ -9,4 +9,4 @@ services:
     ports:
       - ${DOCKER_PORT:-8000}:8000
 
-    command: tail -f /dev/null
+    command: symfony server:start --allow-all-ip
