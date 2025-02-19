@@ -21,7 +21,6 @@ generate_project() {
         -v "$(pwd):/workspace" \
         "$DOCKER_IMAGE_NAME" \
         /bin/bash -c "cp -p -r /build-space/* /workspace"
-    # /bin/bash -c "cp -p -r /build-space/* /workspace"
 }
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
