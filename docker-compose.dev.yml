@@ -1,0 +1,10 @@
+name: {PROJECT_NAME}
+
+services:
+  symfony-env:
+    container_name: ${COMPOSE_PROJECT_NAME}-symfony-env
+    build: .
+    volumes:
+      - ./app:/var/www/symfony
+    ports:
+      - ${DOCKER_PORT:-8000}:8000
