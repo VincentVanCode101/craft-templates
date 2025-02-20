@@ -9,60 +9,17 @@ ARG PROJECT_NAME=default-project-name
 # Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install required dependencies
+# Install only required dependencies
 RUN apt-get update && apt-get install -y \
-    curl \
-    unzip \
-    git \
-    php-cli \
-    php-mbstring \
-    php-xml \
-    php-curl \
-    php-zip \
-    php-intl \
-    php-tokenizer \
-    php-mysql \
-    php-bcmath \
-    php-ctype \
-    php-iconv \
-    php-gd \
-    php-pdo \
-    php-opcache \
-    php-simplexml \
-    php-dom \
-    php-xmlwriter \
-    php-xmlreader \
-    php-phar \
-    php-json \
-    php-fileinfo \
-    php-tokenizer \
-    php-curl \
-    php-zip \
-    php-intl \
-    php-mysql \
-    php-bcmath \
-    php-ctype \
-    php-iconv \
-    php-gd \
-    php-pdo \
-    php-opcache \
-    php-simplexml \
-    php-dom \
-    php-xmlwriter \
-    php-xmlreader \
-    php-phar \
-    php-json \
-    php-fileinfo \
-    && apt-get clean
-
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+    curl unzip git php-cli && \
+    apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
 
 # Install Symfony CLI
 RUN curl -sS https://get.symfony.com/cli/installer | bash && \
     mv /root/.symfony*/bin/symfony /usr/local/bin/symfony
 
-# Set working directory (volume will be mounted here)
+# Generate Symfony Project
 RUN symfony new --no-git --no-interaction --webapp .
 
-RUN chown -R 1000:1000 /build-space
+# Ensure the host user has ownership
+RUN chown -R ${UID}:${GID} /build-space
