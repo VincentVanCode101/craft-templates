@@ -3,6 +3,8 @@ name: {PROJECT_NAME}
 services:
   symfony-env:
     container_name: ${COMPOSE_PROJECT_NAME}-symfony-env
+    environment:
+      - DATABASE_URL="mysql://symfony_user:symfony_password@mariadb:3306/symfony_db"
     build: .
     volumes:
       - ./:/var/www/symfony
@@ -10,3 +12,21 @@ services:
       - ${DOCKER_PORT:-8000}:8000
 
     command: symfony server:start --allow-all-ip
+
+
+  mariadb:
+    image: mariadb:latest
+    container_name: ${COMPOSE_PROJECT_NAME}-mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: symfony_db
+      MYSQL_USER: symfony_user
+      MYSQL_PASSWORD: symfony_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - {PROJECT_NAME}-mariadb_data:/var/lib/mysql
+
+volumes:
+  {PROJECT_NAME}-mariadb_data:
