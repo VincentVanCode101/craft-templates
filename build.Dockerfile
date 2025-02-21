@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM php:8.2-alpine AS builder
 
 WORKDIR /build-space
 
@@ -6,11 +6,7 @@ ARG UID=1000
 ARG GID=1000
 ARG PROJECT_NAME=default-project-name
 
-ENV DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update && apt-get install -y \
-    curl unzip git php-cli php-xml php-mbstring && \
-    apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
+RUN apk update && apk add --no-cache curl unzip bash
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 

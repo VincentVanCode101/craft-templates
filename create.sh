@@ -16,7 +16,10 @@ echo "Step 2: Replacing project name placeholders..."
 source ./rename_project.sh
 rename_project "$PROJECT_NAME"
 
-echo "Step 3: Cleaning up build files..."
-rm -f generate_project.sh rename_project.sh create.sh build.Dockerfile
+echo "Step 3: Appending database.env contents to .env..."
+cat database.env >>.env
+
+echo "Step 4: Cleaning up build files..."
+rm -f generate_project.sh rename_project.sh create.sh build.Dockerfile database.env
 
 echo "Project setup complete!"

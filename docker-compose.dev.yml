@@ -3,8 +3,6 @@ name: {PROJECT_NAME}
 services:
   symfony-env:
     container_name: ${COMPOSE_PROJECT_NAME}-symfony-env
-    environment:
-      - DATABASE_URL="mysql://symfony_user:symfony_password@mariadb:3306/symfony_db"
     build: .
     volumes:
       - ./:/var/www/symfony
