@@ -1,5 +1,5 @@
 services:
-  {PROJECT_NAME}-r-env:
+  r-env:
     build:
       context: .
     working_dir: /usr/src/app
