@@ -1,0 +1,15 @@
+services:
+  {PROJECT_NAME}-r-env:
+    build:
+      context: .
+    working_dir: /usr/src/app
+    environment:
+      - R_LIBS_USER=/usr/local/lib/R/site-library
+    volumes:
+      - .:/usr/src/app
+      - r_libs:/usr/local/lib/R/site-library # named volume for installed packages
+      - cran_cache:/tmp/downloaded_packages  # named volume for downloaded tarballs
+
+volumes:
+  r_libs:     # persists installed R packages
+  cran_cache: # caches downloaded package tarballs
