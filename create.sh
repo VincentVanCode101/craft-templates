@@ -10,10 +10,7 @@ PROJECT_NAME="$1"
 
 source ./rename_project.sh
 
-echo "Step 1: Replacing project name placeholders..."
-rename_project "$PROJECT_NAME"
-
-echo "Step 2: Cleaning up build files..."
-rm -f rename_project.sh create.sh
+echo "Step 1: Cleaning up build files..."
+rm -f create.sh
 
 echo "Project setup complete!"
