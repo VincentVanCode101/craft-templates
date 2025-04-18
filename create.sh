@@ -8,8 +8,6 @@ fi
 
 PROJECT_NAME="$1"
 
-source ./rename_project.sh
-
 echo "Step 1: Cleaning up build files..."
 rm -f create.sh
 
