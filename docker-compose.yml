@@ -1,0 +1,5 @@
+services:
+  csharp-compiler:
+    build: .
+    volumes:
+      - .:/app
