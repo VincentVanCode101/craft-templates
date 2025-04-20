@@ -1,7 +1,6 @@
 # install_packages.R
 args <- commandArgs(trailingOnly = TRUE)
 
-# if you passed names on the CLI, use them; otherwise read from packages.txt
 pkgs <- if (length(args) > 0) {
   args
 } else if (file.exists("packages.txt")) {
