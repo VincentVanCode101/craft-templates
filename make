@@ -18,22 +18,20 @@ shift || true
 
 case "$cmd" in
 
-  install-package)
-    # pass any additional args through to install_packages.R:
-    # if none given, it’ll read packages.txt
-    Rscript install_packages.R "$@"
-    ;;
+install-package)
+  Rscript install_packages.R "$@"
+  ;;
 
-  run)
-    if [[ $# -lt 1 ]]; then
-      echo "Error: run needs a script filename" >&2
-      usage
-    fi
-    Rscript "$@"
-    ;;
-
-  *)
-    echo "Error: unknown command '$cmd'" >&2
+run)
+  if [[ $# -lt 1 ]]; then
+    echo "Error: run needs a script filename" >&2
     usage
-    ;;
+  fi
+  Rscript "$@"
+  ;;
+
+*)
+  echo "Error: unknown command '$cmd'" >&2
+  usage
+  ;;
 esac

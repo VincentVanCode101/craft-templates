@@ -7,8 +7,8 @@ services:
       - R_LIBS_USER=/usr/local/lib/R/site-library
     volumes:
       - .:/usr/src/app
-      - r_libs:/usr/local/lib/R/site-library # named volume for installed packages
-      - cran_cache:/tmp/downloaded_packages  # named volume for downloaded tarballs
+      - r_libs:/usr/local/lib/R/site-library
+      - cran_cache:/tmp/downloaded_packages
 
 volumes:
   r_libs:     # persists installed R packages
