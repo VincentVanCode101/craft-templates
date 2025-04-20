@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ======== MANUAL CONFIGURATION ========
+SERVICE_NAME="python-env"
+ENTRYPOINT="main.py"
+# ======================================
+
+CONTAINER_ID=
+
+start_docker_compose() {
+    echo "Starting Docker Compose..."
+    docker compose up -d
+
+    CONTAINER_ID=$(docker compose ps -q "$SERVICE_NAME")
+    if [ -z "$CONTAINER_ID" ]; then
+        echo "Error: Could not find the container ID for the '$SERVICE_NAME' service." >&2
+        exit 1
+    fi
+    echo "Docker container ID for '$SERVICE_NAME': $CONTAINER_ID"
+}
+
+kill_docker_container() {
+    echo "Killing Docker Container ($CONTAINER_ID)..."
+    docker kill "$CONTAINER_ID"
+}
+
+install_packages_in_container() {
+    echo "Installing packages in the Docker container..."
+    docker exec "$CONTAINER_ID" ./make install-package
+}
+
+run_entrypoint_in_container() {
+    echo "Running $ENTRYPOINT in the Docker container..."
+    docker exec "$CONTAINER_ID" ./make run "$ENTRYPOINT"
+}
+
+# ======== EXECUTION FLOW ========
+start_docker_compose
+install_packages_in_container
+run_entrypoint_in_container
+kill_docker_container
