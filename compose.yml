@@ -1,12 +1,8 @@
-name: {PROJECT_NAME}
-
 services:
   go-env:
-    container_name: ${COMPOSE_PROJECT_NAME}-go-env
     build:
       context: .
       target: dev
-    image: ${COMPOSE_PROJECT_NAME}-go-env:latest
     volumes:
       - .:/app
     entrypoint: ["tail", "-f", "/dev/null"]

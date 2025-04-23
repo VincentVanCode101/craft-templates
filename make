@@ -7,22 +7,19 @@ MAIN_PACKAGE="./main.go"
 
 # Function to display usage information
 usage() {
-    echo "Usage: $0 {all|build|linux-build|run|test|clean} [FILE]"
+    echo "Usage: $0 {all|build|linux-build|run|test|clean|install-package} [FILE]"
     echo ""
     echo "  FILE (optional) - When provided with build or run, overrides the default main package."
     exit 1
 }
 
-# Read the first and second command-line arguments.
 COMMAND="$1"
 FILE="$2"
 
-# If no command is provided, default to "build"
 if [ -z "$COMMAND" ]; then
     COMMAND="build"
 fi
 
-# The 'all' target is equivalent to 'build'
 if [ "$COMMAND" = "all" ]; then
     COMMAND="build"
 fi
@@ -34,7 +31,6 @@ build)
         go build -o "$BINARY_NAME" "$MAIN_PACKAGE"
         chmod +x "$BINARY_NAME"
     else
-        # If FILE ends with ".go", remove the extension to form the output binary name.
         if [[ "$FILE" == *.go ]]; then
             OUTPUT=$(basename "$FILE" .go)
         else
@@ -55,7 +51,6 @@ run)
         echo "Running the main project ($BINARY_NAME)..."
         ./"$BINARY_NAME"
     else
-        # If FILE ends with ".go", remove the extension to get the binary name.
         if [[ "$FILE" == *.go ]]; then
             OUTPUT=$(basename "$FILE" .go)
         else
@@ -64,6 +59,10 @@ run)
         echo "Running $FILE (binary: $OUTPUT)..."
         ./"$OUTPUT"
     fi
+    ;;
+install-package)
+    echo "Installing Go packages..."
+    go mod download
     ;;
 test)
     echo "Running tests..."
