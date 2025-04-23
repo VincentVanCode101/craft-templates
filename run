@@ -4,6 +4,8 @@ set -euo pipefail
 # ======== MANUAL CONFIGURATION ========
 SERVICE_NAME="go-env"
 ENTRYPOINT=$1
+shift
+ARGS=("$@")
 # ======================================
 
 CONTAINER_ID=
@@ -36,8 +38,8 @@ build_in_container() {
 }
 
 run_binary_in_container() {
-    echo "Running $ENTRYPOINT in the Docker container..."
-    docker exec "$CONTAINER_ID" ./make run "$ENTRYPOINT"
+    echo "Running $ENTRYPOINT in the Docker container with args: ${ARGS[*]}"
+    docker exec "$CONTAINER_ID" ./make run "$ENTRYPOINT" "${ARGS[@]}"
 }
 
 # ======== EXECUTION FLOW ========

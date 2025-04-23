@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Bash script for building, testing, and running Go applications
 
 # Application settings
@@ -47,17 +47,20 @@ linux-build)
     chmod +x "$BINARY_NAME"
     ;;
 run)
+    shift
+    FILE="$1"
+    shift
     if [ -z "$FILE" ]; then
-        echo "Running the main project ($BINARY_NAME)..."
-        ./"$BINARY_NAME"
+        echo "Running the main project ($BINARY_NAME) with args: $@"
+        ./"$BINARY_NAME" "$@"
     else
         if [[ "$FILE" == *.go ]]; then
             OUTPUT=$(basename "$FILE" .go)
         else
             OUTPUT=$(basename "$FILE")
         fi
-        echo "Running $FILE (binary: $OUTPUT)..."
-        ./"$OUTPUT"
+        echo "Running $FILE (binary: $OUTPUT) with args: $@"
+        ./"$OUTPUT" "$@"
     fi
     ;;
 install-package)
