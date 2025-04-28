@@ -13,28 +13,28 @@ CONTAINER_ID=
 start_docker_compose() {
     echo "Starting Docker Compose..."
     docker compose up -d
+    echo ""
 
     CONTAINER_ID=$(docker compose ps -q "$SERVICE_NAME")
     if [ -z "$CONTAINER_ID" ]; then
         echo "Error: Could not find the container ID for the '$SERVICE_NAME' service." >&2
         exit 1
     fi
-    echo "Docker container ID for '$SERVICE_NAME': $CONTAINER_ID"
 }
 
 kill_docker_container() {
-    echo "Killing Docker Container ($CONTAINER_ID)..."
-    docker kill "$CONTAINER_ID"
+    docker kill "$CONTAINER_ID" >/dev/null 2>&1
 }
 
 install_packages_in_container() {
-    echo "Installing packages in the Docker container..."
     docker exec "$CONTAINER_ID" ./make install-package
+    echo ""
 }
 
 run_binary_in_container() {
     echo "Running $ENTRYPOINT in the Docker container with args: ${ARGS[*]}"
     docker exec "$CONTAINER_ID" ./make run "$ENTRYPOINT" "${ARGS[@]}"
+    echo ""
 }
 
 # ======== EXECUTION FLOW ========
