@@ -32,11 +32,6 @@ install_packages_in_container() {
     docker exec "$CONTAINER_ID" ./make install-package
 }
 
-build_in_container() {
-    echo "Building the Go binary in the Docker container..."
-    docker exec "$CONTAINER_ID" ./make build "$ENTRYPOINT"
-}
-
 run_binary_in_container() {
     echo "Running $ENTRYPOINT in the Docker container with args: ${ARGS[*]}"
     docker exec "$CONTAINER_ID" ./make run "$ENTRYPOINT" "${ARGS[@]}"
@@ -45,6 +40,5 @@ run_binary_in_container() {
 # ======== EXECUTION FLOW ========
 start_docker_compose
 install_packages_in_container
-build_in_container
 run_binary_in_container
 kill_docker_container
