@@ -8,7 +8,8 @@ install-package)
     pip install -r requirements.txt
     ;;
 run)
-    python "$2"
+    shift
+    python "$@"
     ;;
 *)
     echo "Usage:"
