@@ -3,17 +3,17 @@ set -euo pipefail
 
 generate_project() {
     local PROJECT_NAME="$1"
-    local UID GID
-    UID=$(id -u)
-    GID=$(id -g)
+    local U_ID G_ID
+    U_ID=$(id -u)
+    G_ID=$(id -g)
 
     local DOCKERFILE="build.Dockerfile"
     local DOCKER_IMAGE_NAME="quarkus-project-generator"
 
     docker build \
         -f "$DOCKERFILE" \
-        --build-arg UID="$UID" \
-        --build-arg GID="$GID" \
+        --build-arg U_ID="$U_ID" \
+        --build-arg G_ID="$G_ID" \
         --build-arg ARTIFACT_ID="$PROJECT_NAME" \
         -t "$DOCKER_IMAGE_NAME" .
 
