@@ -3,8 +3,8 @@ set -euo pipefail
 
 generate_project() {
     local PROJECT_NAME="$1"
-    local U_ID GID
-    U_ID=$(id -u)
+    local UID GID
+    UID=$(id -u)
     GID=$(id -g)
 
     local DOCKERFILE="build.Dockerfile"
@@ -12,7 +12,7 @@ generate_project() {
 
     docker build \
         -f "$DOCKERFILE" \
-        --build-arg UID="$U_ID" \
+        --build-arg UID="$UID" \
         --build-arg GID="$GID" \
         --build-arg ARTIFACT_ID="$PROJECT_NAME" \
         -t "$DOCKER_IMAGE_NAME" .

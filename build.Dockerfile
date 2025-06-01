@@ -12,6 +12,6 @@ RUN mvn io.quarkus.platform:quarkus-maven-plugin:3.17.5:create \
     -DprojectArtifactId=${ARTIFACT_ID} \
     -Dextensions='rest'
 
-RUN chown -R 1000:1000 /build-space
+RUN chown -R ${UID}:${GID} /build-space
 
 CMD ["tail", "-f", "/dev/null"]
